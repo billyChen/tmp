@@ -8,6 +8,7 @@ set :log_level, :info
 set :linked_files, %w(locales.xml)
 set :linked_dirs, %w(uploads)
 set :keep_releases, 5
+set :deploy_via, "remote_cache"
 
 def current_git_branch
   user = `git config --global user.name`.strip
