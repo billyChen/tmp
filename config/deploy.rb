@@ -1,15 +1,27 @@
-set :stages, %w(production staging)
-set :default_stage, "staging"
-require 'capistrano/ext/multistage'
+lock '3.3.5'
+
+set :application, 'blog'
+set :repo_url, 'git@github.com:BrandAndCelebrities/blog.git'
+set :tmp_dir, "/home/nova/tmp"
 set :scm, :git
-set :repository, "https://github.com/billyChen/tmp.git"
-set(:git_enable_submodules, true)
+set :log_level, :info
+set :linked_files, %w(locales.xml)
+set :linked_dirs, %w(uploads)
+set :keep_releases, 5
 
-set :user, "billyChen"
-server "91.121.184.127", :app
-set :deploy_to, "/www/blog_staging"
-
-ssh_options[:forward_agent] = true
-set :deploy_via, :remote_cache
-set :copy_exclude, [".git", ".DS_Store", ".gitignore", ".gitmodules"]
-set :use_sudo, false
+def current_git_branch
+  user = `git config --global user.name`.strip
+  branch = ENV["REVISION"] || ENV["BRANCH_NAME"] ||`git symbolic-ref HEAD 2> /dev/null`.strip.gsub(/^refs\/heads\//, '') || "master"
+  puts ""
+  puts "".yellow
+  puts ""
+  puts "#{'ENV'.blue} - Environment selected is #{fetch(:stage).to_s == 'production' ? fetch(:stage).to_s.red : fetch(:stage).to_s.green}"
+  puts "#{'USER'.blue} - Deploy power by #{user.green}"
+  puts "#{'GIT'.blue} - Branch git use is #{branch.green}"
+  puts "#{'DIR'.blue} - Deploy to #{fetch(:deploy_to).to_s.green}"
+  puts "#{'Date'.blue} - #{Time.now.strftime('%d/%m/%Y %H:%M:%S').green}"
+  puts ""
+  puts "".yellow
+  puts ""
+  branch
+end

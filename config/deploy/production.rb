@@ -60,13 +60,9 @@
 #     # password: 'please use keys'
 #   }
 
-set :deploy_to, "/www/blog_production"
-server "91.121.184.127", :app
 
-namespace :blog_production do
-  task :symlink, :roles => :app do
-    run "touch #{release_path}/env_production"
-  end
-end
+set :stage, :production
+set :deploy_to, '/home/nova/www/blog_production'
+set :branch, current_git_branch
 
-after "deploy:symlink", "blog_production:symlink"
+server '91.121.184.127', user: 'nova', roles: %w{web app db}
