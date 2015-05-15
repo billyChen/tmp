@@ -1,12 +1,10 @@
 lock '3.3.5'
 
 set :application, 'blog'
-set :repo_url, 'git@github.com:BrandAndCelebrities/blog.git'
+set :repo_url, 'git@github.com:billyChen/tmp.git'
 set :tmp_dir, "/home/nova/tmp"
 set :scm, :git
 set :log_level, :info
-set :linked_files, %w(locales.xml)
-set :linked_dirs, %w(uploads)
 set :keep_releases, 5
 set :deploy_via, "remote_cache"
 
